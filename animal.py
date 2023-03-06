@@ -1,10 +1,11 @@
 import numpy.random as npr
 import pandas as pd
 import random
+import itertools
 from dataclasses import dataclass
+
 @dataclass
 class Animal:
-    uid: int
     species: str
     age: int
     weight: int
@@ -12,28 +13,23 @@ class Animal:
     alive: bool
     gene_edit: bool
 
-@dataclass()
-class Initial_Condition:
-    pass
+    id_iteration = itertools.count()
 
-def other():
-    pass
+    @classmethod
+    def generate_uid(cls):
+        uid = next(cls.id_iteration)
 
-
-
-# def unique_id():
-#     seed = random.getrandbits(32)
-
+    @classmethod
+    def generate_age(cls) -> int:
+        age = npr.normal()
+        return age
 
 
-# x = Animal("Boar", 10, 5, 1, False, False)
-# print(repr(x))
+x = Animal("a", 5, 3, 2, False, False)
+print(x.generate_uid())
+# population = [Animal() for i in range(100)]
 
-def get_initial_conditions():
-    pass
 
-def generate_animal():
-    pass
 
 
 #     def __repr__(self):
