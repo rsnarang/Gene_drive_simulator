@@ -1,0 +1,16 @@
+---
+## Starting Parameters for simulation
+species: "Boar"
+#Age range; once the Boar hits 5 years old, it cannot mate
+age: [1,5]
+# Starting percentages for age groups
+age_percentage:
+  young: 0.4
+  adult: 0.5
+  elder: 0.1
+weight: [100, 400]
+#Choose from poisson, binomial, beta, uniform, truncated_normal
+age_distribution: truncated_normal
+weight_distribution: truncated_normal
+newborn_survival_rate: 0.25
+adult_survival_rate: 0.5
