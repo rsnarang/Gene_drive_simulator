@@ -1,21 +1,21 @@
-from pathlib import WindowsPath
-
 import numpy.random as npr
 import scipy.stats as sp
 import yaml
 import itertools
 from dataclasses import dataclass
 
-config = yaml.safe_load(config.yaml)
+stream = open("../config.yaml", "r")
+data = yaml.safe_load(stream)
+print(data["age"])
 
 @dataclass()
 class RandomAttr:
 
     @staticmethod
     def age() -> int:
-        n = 1
-        p = 6
-        return int(sp.truncnorm.rvs(n, p))
+        starting_age = data["age"][0]
+        ending_age = data["age"][1]
+        return int(npr.uniform(starting_age, ending_age))
 
     @staticmethod
     def weight(self) -> int:
@@ -32,5 +32,3 @@ class RandomAttr:
     @staticmethod
     def gene_edit(self) -> bool:
         pass
-
-

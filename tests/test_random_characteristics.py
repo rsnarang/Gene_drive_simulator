@@ -1,25 +1,21 @@
-import sys
-sys.path.append('../lib')
-
-from random_characteristics import *
+from lib.random_characteristics import RandomAttr
+import yaml
 import unittest
+
+stream = open("../config.yaml", "r")
+data = yaml.safe_load(stream)
+
+print(RandomAttr.age())
 
 
 class TestRandomAttr(unittest.TestCase):
 
     def test_age(self):
-        self.assertTrue(age() is int)
-        self.assertTrue(x <= age() <= y)
-        assert 1 <= RandomAttr.age() <= 6
+        self.assertIs(type(RandomAttr.age()), int)
+        self.assertLessEqual(RandomAttr.age(), data["age"][1])
+        self.assertGreaterEqual(RandomAttr.age(), data["age"][0])
 
-    # def test_weight_type(self):
-    #     assert type(RandomCharacteristics.weight()) is int
-    #     assert 1 <= RandomCharacteristics.weight() <= 400
 
-# class TestRandomAttr(unittest.TestCase):
-#     def test_age(self):
-#         self.assertEqual(True, False)
 #
-#
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()
