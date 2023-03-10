@@ -4,7 +4,7 @@ import yaml
 import itertools
 from dataclasses import dataclass
 
-stream = open("../config.yaml", "r")
+stream = open("../../config.yaml", "r")
 data = yaml.safe_load(stream)
 print(data["age"])
 

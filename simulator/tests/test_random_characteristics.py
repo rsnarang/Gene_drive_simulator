@@ -1,8 +1,8 @@
-from lib.random_characteristics import RandomAttr
+from simulator.Animal.random_characteristics import RandomAttr
 import yaml
 import unittest
 
-stream = open("../config.yaml", "r")
+stream = open("../../config.yaml", "r")
 data = yaml.safe_load(stream)
 
 print(RandomAttr.age())
@@ -14,6 +14,8 @@ class TestRandomAttr(unittest.TestCase):
         self.assertIs(type(RandomAttr.age()), int)
         self.assertLessEqual(RandomAttr.age(), data["age"][1])
         self.assertGreaterEqual(RandomAttr.age(), data["age"][0])
+
+
 
 
 #
