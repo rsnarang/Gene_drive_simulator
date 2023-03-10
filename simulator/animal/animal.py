@@ -50,7 +50,7 @@ class TestRandomCharacteristic():
 
 
 # @dataclass
-# class Animal:
+# class animal:
 #
 #     def __post_init__(self) -> None:
 #         uid = itertools.count()
@@ -64,7 +64,7 @@ class TestRandomCharacteristic():
 #         return age
 #
 #
-# x = Animal("a", 5, 3, 2, False, False)
+# x = animal("a", 5, 3, 2, False, False)
 
 
 
@@ -76,7 +76,7 @@ class TestRandomCharacteristic():
 
 
 
-# population = [Animal() for i in range(100)]
+# population = [animal() for i in range(100)]
 
 
 
@@ -84,9 +84,9 @@ class TestRandomCharacteristic():
 #     def __repr__(self):
 #         return repr(f"Species: {self.species}, Age: {self.age}, Weight: {self.weight},"
 #                     f"Sex: {self.sex}, Alive: {self.alive}, Gene_Edit: {self.gene_edit}")
-# class Boar(Animal):
+# class Boar(animal):
 #     def __init__(self):
-#         Animal.__init__(self, "Boar")
+#         animal.__init__(self, "Boar")
 #
 #
 #     # def __repr__(self):
