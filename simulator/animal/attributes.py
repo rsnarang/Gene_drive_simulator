@@ -11,6 +11,7 @@ class StartingAttr:
     stream = open("../config.yaml", "r")
     data = yaml.safe_load(stream)
     id_iter = itertools.count()
+    alive = True
 
     def __post_init__(self):
         self.id = next(self.id_iter)
@@ -40,10 +41,6 @@ class InitialPopulation(StartingAttr):
         return int(npr.uniform(starting_age, ending_age))
 
     @classmethod
-    def starting_alive(cls) -> bool:
-        return True
-
-    @classmethod
     def starting_gene_edit(cls) -> bool:
         if npr.binomial(1, 0.1) == 0:
             return True
@@ -55,9 +52,8 @@ class InitialPopulation(StartingAttr):
 
 
 class NewBorn(StartingAttr):
-    @classmethod
-    def age(cls):
-        return 0
+
+    age = 0
 
     @classmethod
     def gene_edit(cls):
