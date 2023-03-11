@@ -1,16 +1,12 @@
-from simulator.animal import attributes
+from simulator.animal import attributes, constants
 import pytest
-import yaml
-
-stream = open("../config.yaml", "r")
-data = yaml.safe_load(stream)
 
 
 class TestStartingAttr:
     def test_weight(self):
         assert type(attributes.InitialPopulation.weight()) == int
-        assert attributes.InitialPopulation.weight() <= data["weight"][1]
-        assert attributes.InitialPopulation.weight() >= data["weight"][0]
+        assert attributes.InitialPopulation.weight() <= constants.weight_range[1]
+        assert attributes.InitialPopulation.weight() >= constants.weight_range[0]
 
     def test_sex_male(self):
         assert (type(attributes.InitialPopulation.sex_male()) == bool)
@@ -19,14 +15,14 @@ class TestStartingAttr:
 class TestInitialPopulation:
     def test_starting_age(self):
         assert type(attributes.InitialPopulation.starting_age()) == int
-        assert attributes.InitialPopulation.starting_age() <= data["age"][1]
-        assert attributes.InitialPopulation.starting_age() >= data["age"][0]
+        assert attributes.InitialPopulation.starting_age() <= constants.age_range[1]
+        assert attributes.InitialPopulation.starting_age() >= constants.age_range[0]
 
     def test_starting_gene_edit(self):
         assert (type(attributes.InitialPopulation.starting_gene_edit()) == bool)
 
 
-class TestNewBorn():
+class TestNewBorn:
     def test_gene_edit(self):
         assert (type(attributes.NewBorn.gene_edit()) == bool)
 
