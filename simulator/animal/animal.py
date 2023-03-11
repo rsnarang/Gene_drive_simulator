@@ -17,10 +17,7 @@ class StartingAttr:
 
     @staticmethod
     def sex_male() -> bool:
-        if npr.binomial(1, 0.5) == 0:
-            return True
-        else:
-            return False
+        return npr.binomial(1, 0.5) == 0
 
 
 # These functions are only for initializing our
@@ -32,10 +29,7 @@ class StarterAnimal(StartingAttr):
 
     @staticmethod
     def starting_gene_edit() -> bool:
-        if npr.binomial(1, 0.1) == 0:
-            return True
-        else:
-            return False
+        return npr.binomial(1, 0.1) == 0
 
     @classmethod
     def create_starting_animal(cls) -> dict:
@@ -55,15 +49,12 @@ class NewbornAnimal(StartingAttr):
     age = 0
 
     @staticmethod
-    def gene_edit():
-        if npr.binomial(1, constants.gene_edite_rate) == 1:
-            return True
-        else:
-            return False
+    def gene_edit() -> bool:
+        return npr.binomial(1, constants.gene_edit_rate) == 1
 
     @classmethod
     def create_newborn_animal(cls) -> dict:
-        starting_animal = {
+        return {
             "id": cls.id,
             "alive": cls.alive,
             "weight": cls.weight(),
@@ -71,7 +62,6 @@ class NewbornAnimal(StartingAttr):
             "gene_edit": cls.gene_edit(),
             "age": cls.age
         }
-        return starting_animal
 
 
 if __name__ == "__main__":

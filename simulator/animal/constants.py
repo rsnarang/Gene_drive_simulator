@@ -10,6 +10,6 @@ age_range = (1, 5)
 
 weight_range = (150, 400)
 
-gene_edite_rate = 0.8
+gene_edit_rate = 0.8
 newborn_survival_rate = 0.25
 adult_survival_rate = 0.5
