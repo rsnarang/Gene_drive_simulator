@@ -2,7 +2,6 @@ from simulator.animal.animal import StarterAnimal, NewbornAnimal
 from simulator.animal import constants
 from dataclasses import dataclass
 from timeit import default_timer as timer
-import itertools
 
 
 @dataclass

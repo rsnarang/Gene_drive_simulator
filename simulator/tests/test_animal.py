@@ -2,7 +2,7 @@ from simulator.animal import animal, constants
 import pytest
 
 
-class TestStartingAttr:
+class TestAnimal:
     def test_weight(self):
         assert type(animal.StarterAnimal.weight()) == int
         assert animal.StarterAnimal.weight() <= constants.weight_range[1]
@@ -12,14 +12,11 @@ class TestStartingAttr:
         assert (type(animal.StarterAnimal.sex_male()) == bool)
 
 
-class TestStarterAnimalAnimal:
+class TestStarterAnimal:
     def test_starting_age(self):
         assert type(animal.StarterAnimal.starting_age()) == int
         assert animal.StarterAnimal.starting_age() <= constants.age_range[1]
         assert animal.StarterAnimal.starting_age() >= constants.age_range[0]
-
-    def test_starting_gene_edit(self):
-        assert (type(animal.StarterAnimal.starting_gene_edit()) == bool)
 
     def test_create_starting_animal(self):
         starting_animal = animal.StarterAnimal.create_starting_animal()

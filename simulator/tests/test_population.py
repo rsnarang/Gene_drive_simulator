@@ -5,5 +5,6 @@ import pytest
 class TestStarterPopulation:
 
     def test_generate_initial_population(self):
-        assert type(StarterPopulation.generate_initial_population()) == list
-        assert len(StarterPopulation.generate_initial_population()) == 100
+        population = StarterPopulation.generate_initial_population()
+        assert type(population) == list
+        assert len(population) == constants.starting_population_size

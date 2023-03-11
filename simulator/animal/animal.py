@@ -6,8 +6,9 @@ from dataclasses import dataclass
 
 
 @dataclass
-class StartingAttr:
+class Animal:
     id_iter = itertools.count()
+    id = next(id_iter)
 
     @staticmethod
     def weight() -> int:
@@ -20,7 +21,7 @@ class StartingAttr:
     @classmethod
     def create_animal(cls) -> dict:
         return {
-            "id": next(cls.id_iter),
+            "id": cls.id,
             "alive": True,
             "sex_male": cls.sex_male(),
             "weight": cls.weight()
@@ -28,25 +29,35 @@ class StartingAttr:
 
 
 # These functions are only for initializing our starting population
-class StarterAnimal(StartingAttr):
+class StarterAnimal(Animal):
+
     @staticmethod
     def starting_age() -> int:
         return int(npr.uniform(*constants.age_range))
 
     @staticmethod
     def starting_gene_edit() -> bool:
-        return npr.binomial(1, 0.1) == 0
+        return npr.binomial(1, 0.1) == 1
+
+    @staticmethod
+    def is_male(animal) -> bool:
+        return animal["sex_male"]
 
     @classmethod
     def create_starting_animal(cls) -> dict:
-        return cls.create_animal() | {
-            "gene_edit": cls.starting_gene_edit(),
-            "age": cls.starting_age()
-        }
+        animal = cls.create_animal()
+        animal["age"] = cls.starting_age()
+
+        # Only gene_edited males will be introduced to the population
+        if cls.is_male(animal):
+            animal["gene_edit"] = cls.starting_gene_edit()
+        else:
+            animal["gene_edit"] = False
+        return animal
 
 
 # These functions are for all Newborn Animals
-class NewbornAnimal(StartingAttr):
+class NewbornAnimal(Animal):
     age = 0
 
     @staticmethod
@@ -64,7 +75,7 @@ class NewbornAnimal(StartingAttr):
 if __name__ == "__main__":
     start = timer()
     for i in range(100):
+        x = StarterAnimal.create_starting_animal()
         print(StarterAnimal.create_starting_animal())
-
     end = timer()
     print(end - start)
