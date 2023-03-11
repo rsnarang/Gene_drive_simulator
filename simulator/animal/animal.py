@@ -8,10 +8,8 @@ from dataclasses import dataclass
 @dataclass
 class StartingAttr:
     id_iter = itertools.count()
-
-    def __post_init__(self):
-        self.id = next(self.id_iter)
-        self.alive = True
+    id = next(id_iter)
+    alive = True
 
     @staticmethod
     def weight() -> int:
@@ -23,6 +21,7 @@ class StartingAttr:
             return True
         else:
             return False
+
 
 # These functions are only for initializing our
 # simulation based on yaml config
@@ -38,11 +37,22 @@ class InitialPopulation(StartingAttr):
         else:
             return False
 
+    @classmethod
+    def create_starting_animal(cls) -> dict:
+        starting_animal = {
+            "id": cls.id,
+            "alive": cls.alive,
+            "weight": cls.weight(),
+            "sex_male": cls.sex_male(),
+            "gene_edit": cls.starting_gene_edit(),
+            "age": cls.starting_age()
+        }
+        return starting_animal
+
+
 # These functions are for all newborns
 class NewBorn(StartingAttr):
-
-    def __post_init__(self):
-        self.age = 0
+    age = 0
 
     @staticmethod
     def gene_edit():
@@ -51,9 +61,22 @@ class NewBorn(StartingAttr):
         else:
             return False
 
+    @classmethod
+    def create_newborn_animal(cls) -> dict:
+        starting_animal = {
+            "id": cls.id,
+            "alive": cls.alive,
+            "weight": cls.weight(),
+            "sex_male": cls.sex_male(),
+            "gene_edit": cls.gene_edit(),
+            "age": cls.age
+        }
+        return starting_animal
+
 
 if __name__ == "__main__":
     start = timer()
-    print(StartingAttr)
+    print(InitialPopulation.create_starting_animal())
+    print(NewBorn.create_newborn_animal())
     end = timer()
     print(end - start)
