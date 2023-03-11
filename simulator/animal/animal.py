@@ -25,7 +25,7 @@ class StartingAttr:
 
 # These functions are only for initializing our
 # simulation based on yaml config
-class InitialPopulation(StartingAttr):
+class StarterAnimal(StartingAttr):
     @staticmethod
     def starting_age() -> int:
         return int(npr.uniform(*constants.age_range))
@@ -50,8 +50,8 @@ class InitialPopulation(StartingAttr):
         return starting_animal
 
 
-# These functions are for all newborns
-class NewBorn(StartingAttr):
+# These functions are for all NewbornAnimals
+class NewbornAnimal(StartingAttr):
     age = 0
 
     @staticmethod
@@ -76,7 +76,7 @@ class NewBorn(StartingAttr):
 
 if __name__ == "__main__":
     start = timer()
-    print(InitialPopulation.create_starting_animal())
-    print(NewBorn.create_newborn_animal())
+    print(StarterAnimal.create_starting_animal())
+    print(NewbornAnimal.create_newborn_animal())
     end = timer()
     print(end - start)
