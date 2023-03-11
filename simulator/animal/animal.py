@@ -8,8 +8,6 @@ from dataclasses import dataclass
 @dataclass
 class StartingAttr:
     id_iter = itertools.count()
-    id = next(id_iter)
-    alive = True
 
     @staticmethod
     def weight() -> int:
@@ -19,9 +17,17 @@ class StartingAttr:
     def sex_male() -> bool:
         return npr.binomial(1, 0.5) == 0
 
+    @classmethod
+    def create_animal(cls) -> dict:
+        return {
+            "id": next(cls.id_iter),
+            "alive": True,
+            "sex_male": cls.sex_male(),
+            "weight": cls.weight()
+        }
 
-# These functions are only for initializing our
-# simulation based on yaml config
+
+# These functions are only for initializing our starting population
 class StarterAnimal(StartingAttr):
     @staticmethod
     def starting_age() -> int:
@@ -33,18 +39,13 @@ class StarterAnimal(StartingAttr):
 
     @classmethod
     def create_starting_animal(cls) -> dict:
-        starting_animal = {
-            "id": cls.id,
-            "alive": cls.alive,
-            "weight": cls.weight(),
-            "sex_male": cls.sex_male(),
+        return cls.create_animal() | {
             "gene_edit": cls.starting_gene_edit(),
             "age": cls.starting_age()
         }
-        return starting_animal
 
 
-# These functions are for all NewbornAnimals
+# These functions are for all Newborn Animals
 class NewbornAnimal(StartingAttr):
     age = 0
 
@@ -54,11 +55,7 @@ class NewbornAnimal(StartingAttr):
 
     @classmethod
     def create_newborn_animal(cls) -> dict:
-        return {
-            "id": cls.id,
-            "alive": cls.alive,
-            "weight": cls.weight(),
-            "sex_male": cls.sex_male(),
+        return cls.create_animal() | {
             "gene_edit": cls.gene_edit(),
             "age": cls.age
         }
@@ -66,7 +63,8 @@ class NewbornAnimal(StartingAttr):
 
 if __name__ == "__main__":
     start = timer()
-    print(StarterAnimal.create_starting_animal())
-    print(NewbornAnimal.create_newborn_animal())
+    for i in range(100):
+        print(StarterAnimal.create_starting_animal())
+
     end = timer()
     print(end - start)
