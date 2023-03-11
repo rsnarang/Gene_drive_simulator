@@ -1,10 +1,8 @@
 import numpy.random as npr
-import scipy.stats as sp
 import yaml
 from timeit import default_timer as timer
 import itertools
 from dataclasses import dataclass
-
 
 @dataclass
 class StartingAttr:
@@ -52,7 +50,6 @@ class InitialPopulation(StartingAttr):
 
 
 class NewBorn(StartingAttr):
-
     age = 0
 
     @classmethod
