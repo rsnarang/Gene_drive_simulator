@@ -1,4 +1,5 @@
 import numpy.random as npr
+import scipy.stats as scistat
 from simulator.animal import constants
 from timeit import default_timer as timer
 import itertools
@@ -13,12 +14,13 @@ class Animal:
         self.animal = {"id": next(self.id_iter),
                        "alive": True,
                        "weight": self.weight(),
-                       "sex_male": self.sex_male()
+                       "sex_male": self.sex_male(),
+                       "lifespan": self.lifespan()
                        }
 
     @staticmethod
     def weight() -> int:
-        return int(npr.uniform(*constants.weight_range))
+        return int(scistat.truncnorm.rvs(*constants.weight_range))
 
     @staticmethod
     def sex_male() -> bool:
@@ -26,6 +28,11 @@ class Animal:
 
     def is_male(self) -> bool:
         return self.animal["sex_male"]
+
+    @staticmethod
+    def lifespan() -> int:
+        life = scistat.truncnorm.rvs(*constants.lifespan)
+        return int(life)
 
 
 # These functions are only for initializing our starting population
@@ -39,7 +46,7 @@ class StarterAnimal(Animal):
 
     @staticmethod
     def starting_age() -> int:
-        return int(npr.uniform(*constants.age_range))
+        return int(npr.uniform(*constants.starting_age_range))
 
     def starting_gene_edit(self) -> bool:
         if self.is_male():
