@@ -18,17 +18,7 @@ class TestStarterAnimal:
         assert animal.StarterAnimal.starting_age() <= constants.age_range[1]
         assert animal.StarterAnimal.starting_age() >= constants.age_range[0]
 
-    def test_create_starting_animal(self):
-        starting_animal = animal.StarterAnimal.create_starting_animal()
-        assert len(starting_animal) == 6
-        assert type(starting_animal) == dict
-
 
 class TestNewBornAnimal:
     def test_gene_edit(self):
         assert (type(animal.NewbornAnimal.gene_edit()) == bool)
-
-    def test_create_newborn_animal(self):
-        starting_animal = animal.NewbornAnimal.create_newborn_animal()
-        assert len(starting_animal) == 6
-        assert type(starting_animal) == dict

@@ -1,26 +1,24 @@
-from simulator.animal.animal import StarterAnimal, NewbornAnimal
+from simulator.animal.animal import Animal, StarterAnimal, NewbornAnimal
 from simulator.animal import constants
 from dataclasses import dataclass
 from timeit import default_timer as timer
 
 
-@dataclass
-class StarterPopulation:
+def generate_animal() -> object:
+    return StarterAnimal().animal
 
-    @staticmethod
-    def generate_initial_population() -> []:
-        population = []
-        for i in range(constants.starting_population_size):
-            population.append(StarterAnimal.create_starting_animal())
-        return population
 
-    @staticmethod
-    def generate_newborn_population() -> dict:
-        pass
+population = []
+
+
+def generate_starting_population(size: int = constants.starting_population_size) -> []:
+    for i in range(size):
+        animal = generate_animal()
+        population.append(animal)
 
 
 if __name__ == "__main__":
     start = timer()
-    print(StarterPopulation.generate_initial_population())
+    generate_starting_population()
     end = timer()
     print(end - start)
