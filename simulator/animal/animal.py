@@ -3,75 +3,118 @@ import scipy.stats as scistat
 from simulator.animal import constants
 from timeit import default_timer as timer
 import itertools
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict, field
 
 
 @dataclass
 class Animal:
-    id_iter = itertools.count()
+    uid = itertools.count()
+
+    gene_edit: bool
 
     def __post_init__(self):
-        self.animal = {"id": next(self.id_iter),
-                       "alive": True,
-                       "weight": self.weight(),
-                       "sex_male": self.sex_male(),
-                       "lifespan": self.lifespan()
-                       }
+        self.animal_id = next(self.uid)
+        self.alive = True
+        self.age = self.set_age()
+        self.sex_male = self.set_sex_male()
+        self.lifespan = self.set_lifespan()
+        self.weight = self.set_weight()
 
     @staticmethod
-    def weight() -> int:
+    def set_weight() -> int:
         return int(scistat.truncnorm.rvs(*constants.weight_range))
 
     @staticmethod
-    def sex_male() -> bool:
-        return npr.binomial(1, 0.5) == 0
-
-    def is_male(self) -> bool:
-        return self.animal["sex_male"]
+    def set_sex_male() -> bool:
+        return npr.binomial(1, 0.5) < 0.5
 
     @staticmethod
-    def lifespan() -> int:
-        life = scistat.truncnorm.rvs(*constants.lifespan)
-        return int(life)
-
-
-# These functions are only for initializing our starting population
-class StarterAnimal(Animal):
-    def __init__(self):
-        super().__init__()
-        self.animal = self.animal | {
-            "starting_age": self.starting_age(),
-            "starting_gene_edit": self.starting_gene_edit()
-        }
+    def set_lifespan() -> int:
+        return int(scistat.truncnorm.rvs(*constants.lifespan))
 
     @staticmethod
-    def starting_age() -> int:
-        return int(npr.uniform(*constants.starting_age_range))
+    def set_age() -> int:
+        return int(scistat.truncnorm.rvs(*constants.starting_age_range))
 
-    def starting_gene_edit(self) -> bool:
-        if self.is_male():
-            return npr.binomial(1, 0.1) == 1
+    def is_starter_animal(self) -> bool:
+        return self.animal_id <= constants.starting_population_size
+
+    def is_male_starter_animal(self) -> bool:
+        return self.is_starter_animal() and self.sex_male
+
+    def is_fertile(self) -> bool:
+        if self.age < 5:
+
+            if self.sex_male:
+                return True
+
+            elif not self.sex_male and not self.gene_edit:
+                return True
+
+            else:
+                return False
+
+
+def evaluate_starter_gene_edit() -> bool:
+    return npr.binomial(1, constants.starting_gene_edit) > 0.5
+
+
+def evaluate_gene_edit() -> bool:
+    return npr.binomial(1, constants.gene_edit_rate) > 0.5
+
+
+def create_starting_animal() -> object:
+    if evaluate_starter_gene_edit():
+        return Animal(True)
+    else:
+        return Animal(False)
+
+
+def is_parent_gene_edit(animal_1, animal_2) -> bool:
+    return animal_1.gene_edit or animal_2.gene_edit
+
+
+def create_newborn(animal_1, animal_2):
+    if is_parent_gene_edit(animal_1, animal_2):
+        if evaluate_gene_edit():
+            return Animal(True)
         else:
-            return False
+            return Animal(False)
+    else:
+        return Animal(False)
 
 
-# These functions are for all Newborn Animals
-class NewbornAnimal(Animal):
-    def __init__(self):
-        super().__init__()
-        self.animal = self.animal | {
-            "starting_age": 0,
-            "starting_gene_edit": self.gene_edit()
-        }
-
-    @staticmethod
-    def gene_edit() -> bool:
-        return npr.binomial(1, constants.gene_edit_rate) == 1
+# If the male carries gene edit, it spreads
+# If the female carries, she cannot have kids, otherwise normal
+# def create_litter(animal_1: object, animal_2: object) -> None:
+#     if animal_1.is_fertile() and animal_2.is_fertile():
+#         number_of_newborns = npr.poisson(5)
+#         for newborn in number_of_newborns:
+#             create_newborn(animal_1, animal_2)
+#
+#
+# def fight(animal_1, animal_2):
+#     return max(animal_1["weight"], animal_2["weight"])
+#
+#
+# def animal_interaction(animal_1, animal_2) -> None:
+#     genders = get_gender()
+#     if animal_1["sex_male"] != animal_2["sex_male"]:
+#         create_litter(animal_1, animal_2)
+#
+#     elif animal_1["sex_male"] and animal_2["sex_male"] is True:
+#         fight(animal_1, animal_2)
+#
+#     else:
+#         pass
 
 
 if __name__ == "__main__":
     start = timer()
-    for i in range(100):
-        print(StarterAnimal().animal)
+    for i in range(10):
+        print("starter:")
+        print(create_starting_animal())
+        print("newborn")
+        print(create_newborn(Animal(False), Animal(True)))
     end = timer()
     print(end - start)
