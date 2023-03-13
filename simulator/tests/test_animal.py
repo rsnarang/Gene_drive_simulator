@@ -1,10 +1,9 @@
-from simulator.animal import animal, constants
-import pytest
+from simulator.animal import create_animal
 
 
-class TestAnimal:
-    def test_weight(self):
-        assert type(weight()) == int
+class TestCreate:
+    def test_create_starter_animal(self):
+        assert type(create_animal.create_starter_animal(1)) == dict
         assert weight() <= constants.weight_range[1]
         assert weight() >= constants.weight_range[0]
 

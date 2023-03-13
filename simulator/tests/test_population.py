@@ -1,4 +1,4 @@
-from simulator.animal.population import *
+from simulator.animal.create_population import *
 import pytest
 
 
